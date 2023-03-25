@@ -44,7 +44,7 @@ def prepare_model():
         elif cmd_opts.precision == "int8":
             model = model.half().quantize(8).cuda()
         elif cmd_opts.precision == "int4-qe":
-            model = model.half.cuda()
+            model = model.half().cuda()
         elif cmd_opts.precision == "fp32":
             model = model.float()
 
