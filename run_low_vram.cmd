@@ -9,5 +9,5 @@ goto :run
 
 :run
 echo "Start WebUI"
-python webui.py --precision int4-qe
+python webui.py --precision int4-qe --cache-path ./cache --model-path  "THUDM/chatglm-6b-int4-qe"
 pause

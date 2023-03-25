@@ -15,6 +15,7 @@ def prepare_model():
         if cmd_opts.precision == "fp32":
             model = model.float()
         elif cmd_opts.precision == "bf16":
+            print("use bf16 on cpu")
             model = model.bfloat16()
         else:
             model = model.float()
@@ -30,7 +31,7 @@ def prepare_model():
             elif total_vram_in_gb > 10:
                 cmd_opts.precision = 'int8'
             else:
-                cmd_opts.precision = 'int4-qe'
+                cmd_opts.precision = 'int4'
 
             print(f'Choosing precision {cmd_opts.precision} according to your VRAM.'
                   f' If you want to decide precision yourself,'
@@ -58,9 +59,11 @@ def load_model():
 
     global tokenizer, model
     cache_path = cmd_opts.cache_path
+
     if cache_path is not None:
-        tokenizer = AutoTokenizer.from_pretrained(cmd_opts.model_path, trust_remote_code=True, cache_path=cache_path)
-        model = AutoModel.from_pretrained(cmd_opts.model_path, trust_remote_code=True, cache_path=cache_path)
+        print(f"Using cache path: {cache_path}")
+        tokenizer = AutoTokenizer.from_pretrained(cmd_opts.model_path, trust_remote_code=True, cache_dir=cache_path)
+        model = AutoModel.from_pretrained(cmd_opts.model_path, trust_remote_code=True, cache_dir=cache_path)
     else:
 
         tokenizer = AutoTokenizer.from_pretrained(cmd_opts.model_path, trust_remote_code=True)
