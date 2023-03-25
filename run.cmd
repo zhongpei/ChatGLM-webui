@@ -9,5 +9,5 @@ goto :run
 
 :run
 echo "Start WebUI"
-python webui.py --model-path ./cache --precision int4-qe
+python webui.py --precision int4-qe
 pause

@@ -4,6 +4,7 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("--port", type=int, default="17860")
 parser.add_argument("--model-path", type=str, default="THUDM/chatglm-6b")
+parser.add_argument("--cache-path", type=str, help="cache path", default=None)
 parser.add_argument("--precision", type=str, help="evaluate at this precision", choices=["fp32", "fp16", "int4", "int8", "int4-qe"])
 parser.add_argument("--listen", action='store_true', help="launch gradio with 0.0.0.0 as server name, allowing to respond to network requests")
 parser.add_argument("--cpu", action='store_true', help="use cpu")

@@ -30,7 +30,7 @@ def prepare_model():
             elif total_vram_in_gb > 10:
                 cmd_opts.precision = 'int8'
             else:
-                cmd_opts.precision = 'int4'
+                cmd_opts.precision = 'int4-qe'
 
             print(f'Choosing precision {cmd_opts.precision} according to your VRAM.'
                   f' If you want to decide precision yourself,'
@@ -42,6 +42,8 @@ def prepare_model():
             model = model.half().quantize(4).cuda()
         elif cmd_opts.precision == "int8":
             model = model.half().quantize(8).cuda()
+        elif cmd_opts.precision == "int4-qe":
+            model = model.half.cuda()
         elif cmd_opts.precision == "fp32":
             model = model.float()
 
@@ -55,9 +57,14 @@ def load_model():
     from transformers import AutoModel, AutoTokenizer
 
     global tokenizer, model
+    cache_path = cmd_opts.cache_path
+    if cache_path is not None:
+        tokenizer = AutoTokenizer.from_pretrained(cmd_opts.model_path, trust_remote_code=True, cache_path=cache_path)
+        model = AutoModel.from_pretrained(cmd_opts.model_path, trust_remote_code=True, cache_path=cache_path)
+    else:
 
-    tokenizer = AutoTokenizer.from_pretrained(cmd_opts.model_path, trust_remote_code=True)
-    model = AutoModel.from_pretrained(cmd_opts.model_path, trust_remote_code=True)
+        tokenizer = AutoTokenizer.from_pretrained(cmd_opts.model_path, trust_remote_code=True)
+        model = AutoModel.from_pretrained(cmd_opts.model_path, trust_remote_code=True)
     prepare_model()
 
 
